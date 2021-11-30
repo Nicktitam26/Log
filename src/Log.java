@@ -10,6 +10,6 @@ import java.util.Date;
 
 public class Log {
     private BufferedWriter buffered;
-    private string ruta;
-    
+    private String ruta;
+
 }
