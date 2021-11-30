@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -26,14 +27,21 @@ public class Log {
             this.buffered = new BufferedWriter(new FileWriter(this.ruta,append));
         }
         
-    public void addLine(String line) throws IOException{
+    private void addLine(String line, String tipo) throws IOException{
             SimpleDateFormat DateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
             String Fecha = DateFormat.format(new Date());
             this.open(true);
-            this.buffered.write("["+Fecha+"]" + line + "\n");
+            this.buffered.write("["+Fecha+"]" + "["+tipo+"]"+ line + "\n");
             this.close();
     }
-    
+    public void info(String linea) throws IOException{
+        this.addLine(linea,"INFO");
+    }
+    public void error(String linea) throws IOException{
+        this.addLine(linea, "ERROR");
+    }
+    public void advertencia(String linea) throws IOException{
+        this.addLine(linea, "ADVERTENCIA");
     }
     public String[] getLines() throws FileNotFoundException, IOException {  
         ArrayList <String> linesFile = new ArrayList<>();
