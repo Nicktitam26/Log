@@ -32,6 +32,7 @@ public class Log {
             this.open(true);
             this.buffered.write("["+Fecha+"]" + line + "\n");
             this.close();
+    }
     
     
     public String[] getLines() throws FileNotFoundException, IOException {  
