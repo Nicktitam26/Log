@@ -12,14 +12,16 @@ import java.util.Date;
 public class Log {
     private BufferedWriter buffered;
     private String ruta;
-    
-    public Log(String ruta) throws IOException {
+    private String nombre;
+    public Log(String ruta, String nombre) throws IOException {
         this.ruta = ruta;
+        this.nombre = nombre;
         this.open(true);
     }
     
-    public Log(String ruta, boolean reset) throws IOException {
+    public Log(String ruta,String nombre, boolean reset) throws IOException {
         this.ruta = ruta;
+        this.nombre=nombre;
         this.open(!reset);
     }
     
@@ -31,7 +33,7 @@ public class Log {
             SimpleDateFormat DateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
             String Fecha = DateFormat.format(new Date());
             this.open(true);
-            this.buffered.write("["+Fecha+"]" + "["+tipo+"]"+ line + "\n");
+            this.buffered.write("["+Fecha+"]" + "["+tipo+"]: "+ line + "\n");
             this.close();
     }
     public void info(String linea) throws IOException{
