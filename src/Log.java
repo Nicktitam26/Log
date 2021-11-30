@@ -13,8 +13,6 @@ public class Log {
     private BufferedWriter buffered;
     private String ruta;
     private String nombre;
-    private int date;
-    private int date2;
     public Log(String ruta, String nombre) throws IOException {
         this.ruta = ruta;
         this.nombre = nombre;
