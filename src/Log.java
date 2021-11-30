@@ -11,28 +11,37 @@ import java.util.Date;
 public class Log {
     private BufferedWriter buffered;
     private String ruta;
-
+    
     public Log(String ruta) throws IOException {
         this.ruta = ruta;
         this.open(true);
     }
-
+    
     public Log(String ruta, boolean reset) throws IOException {
         this.ruta = ruta;
         this.open(!reset);
     }
-
-    private void open(boolean b) {
-    }
-
-    public String[] getLines() throws FileNotFoundException, IOException {  
-    ArrayList <String> linesFile = new ArrayList<>();
     
-    BufferedReader br = new BufferedReader(new FileReader(this.ruta));
-
-    String line;
-    while ((line = br.readLine()) != null) {
-        linesFile.add(line);
+    private void open(boolean append) throws IOException {
+            this.buffered = new BufferedWriter(new FileWriter(this.ruta,append));
+        }
+        
+    public void addLine(String line) throws IOException{
+            SimpleDateFormat DateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
+            String Fecha = DateFormat.format(new Date());
+            this.open(true);
+            this.buffered.write("["+Fecha+"]" + line + "\n");
+            this.close();
+    
+    
+    public String[] getLines() throws FileNotFoundException, IOException {  
+        ArrayList <String> linesFile = new ArrayList<>();
+        
+        BufferedReader br = new BufferedReader(new FileReader(this.ruta));
+        
+        String line;
+        while ((line = br.readLine()) != null) {
+            linesFile.add(line);
     }
 
     br.close();
@@ -44,6 +53,13 @@ public class Log {
     }
 
     return lines;
+    }
+    public void resetLog() throws IOException {
+        this.open(false);
+        this.close();
+    }
+    private void close() throws IOException{
+        this.buffered.close();
     }
 }
     
