@@ -34,7 +34,7 @@ public class Log {
             this.close();
     }
     
-    
+    }
     public String[] getLines() throws FileNotFoundException, IOException {  
         ArrayList <String> linesFile = new ArrayList<>();
         
