@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.io.File;
 public class Log {
     private BufferedWriter buffered;
     private String ruta;
@@ -24,26 +24,36 @@ public class Log {
         this.nombre=nombre;
         this.open(!reset);
     }
-    
-    private void open(boolean append) throws IOException {
-            this.buffered = new BufferedWriter(new FileWriter(this.ruta,append));
+    private void CreateLogsFolder() throws IOException{
+        File logs = new File(this.ruta);
+        if (!logs.exists()){
+            logs.mkdir();
+            this.info("Se creo la carpeta logs");
         }
+    }
+    private void open(boolean append) throws IOException {
+        SimpleDateFormat DateFormat = new SimpleDateFormat("d-M-y");
+        String Fecha = DateFormat.format(new Date());
+        String dir = this.ruta+"["+Fecha+"] "+this.nombre+".log";
+        this.CreateLogsFolder();
+        this.buffered = new BufferedWriter(new FileWriter(dir,append));
+    }
         
-    private void addLine(String line, String tipo) throws IOException{
-            SimpleDateFormat DateFormat = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
-            String Fecha = DateFormat.format(new Date());
-            this.open(true);
-            this.buffered.write("["+Fecha+"]" + "["+tipo+"]: "+ line + "\n");
-            this.close();
+    private void addLine(String tipo, String line) throws IOException{
+        SimpleDateFormat DateFormat = new SimpleDateFormat("HH:mm:ss");
+        String Fecha = DateFormat.format(new Date());
+        this.open(true);
+        this.buffered.write("["+Fecha+"]" + "["+tipo+"]: "+ line + "\n");
+        this.close();
     }
     public void info(String linea) throws IOException{
-        this.addLine(linea,"INFO");
+        this.addLine("INFO",linea);
     }
     public void error(String linea) throws IOException{
-        this.addLine(linea, "ERROR");
+        this.addLine("ERROR",linea);
     }
     public void advertencia(String linea) throws IOException{
-        this.addLine(linea, "ADVERTENCIA");
+        this.addLine("WARN",linea);
     }
     public String[] getLines() throws FileNotFoundException, IOException {  
         ArrayList <String> linesFile = new ArrayList<>();
